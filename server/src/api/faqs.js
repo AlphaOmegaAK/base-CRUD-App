@@ -59,16 +59,31 @@ router.post('/', async (req, res, next) => {
 });
 
 //  Update
-router.put('/:id', (req, res, next) => {
-    res.json({
-        msg: 'Update',
-    });
+router.put('/:id', async (req, res, next) => {
+    try {
+        const {
+            id
+        } = req.params;
+        const value = await schema.validateAsync(req.body);
+        const item = await faqs.findOne({
+            _id: id,
+        });
+        if (!item) return next();
+        const updated = await faqs.update({
+            _id: id,
+        }, {
+            $set: value
+        });
+        res.json(value)
+    } catch (error) {
+        next(error)
+    }
 });
 
 //  Delete
 router.delete('/:id', (req, res, next) => {
     res.json({
-        msg: 'Delete',
+        msg: 'Update',
     });
 });
 
