@@ -17,7 +17,8 @@ const router = express.Router();
 router.get('/', async (req, res, next) => {
     try {
         const items = faqs.find({});
-        res.json(items);
+
+
 
     } catch (error) {
         next(error);
@@ -37,7 +38,8 @@ router.post('/', async (req, res, next) => {
 
         console.log(req.body);
         const value = await schema.validateAsync(req.body);
-        res.json(value)
+        const insert = await faqs.insert(value);
+        res.json(insert);
 
     } catch (error) {
         next(error);
