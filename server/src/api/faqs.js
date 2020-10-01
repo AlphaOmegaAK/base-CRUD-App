@@ -69,22 +69,30 @@ router.put('/:id', async (req, res, next) => {
             _id: id,
         });
         if (!item) return next();
-        const updated = await faqs.update({
+        await faqs.update({
             _id: id,
         }, {
             $set: value
         });
-        res.json(value)
+        res.json(value);
     } catch (error) {
         next(error)
     }
 });
 
 //  Delete
-router.delete('/:id', (req, res, next) => {
-    res.json({
-        msg: 'Update',
-    });
+router.delete('/:id', async (req, res, next) => {
+    try {
+        const {
+            id
+        } = req.params;
+    await faqs.remove({
+            _id: id
+        });
+        res.status(200).send('Deleted Successfully');
+    } catch (error) {
+        next(error)
+    }
 });
 
 module.exports = router;
