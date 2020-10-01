@@ -26,10 +26,22 @@ router.get('/', async (req, res, next) => {
 });
 
 //  Read One
-router.get('/:id', (req, res, next) => {
-    res.json({
-        msg: 'Show One',
-    });
+router.get('/:id', async (req, res, next) => {
+    try {
+        const {
+            id
+        } = req.params;
+        const item = await faqs.findOne({
+            _id: id,
+
+        });
+        if (!item) {
+            return next()
+        };
+        return res.json(item);
+    } catch (error) {
+        next(error)
+    }
 });
 
 //  Create
